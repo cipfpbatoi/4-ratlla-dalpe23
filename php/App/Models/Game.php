@@ -12,7 +12,12 @@ class Game
     private ?Player $winner;
     private array $scores = [1 => 0, 2 => 0];
 
-    public function __construct( Player $jugador1, Player $jugador2)
+    public function __construct( Player $jugador1, Player $jugador2){
+        $this->board = new Board();
+        $this->players = [1=> $jugador1, 2=> $jugador2];
+        $this->nextPlayer = 1;
+        $this->winner = null;
+    }
 
     // getters i setters
 
