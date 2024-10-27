@@ -12,6 +12,7 @@ class Game
     private ?Player $winner;
     private array $scores = [1 => 0, 2 => 0];
 
+        // TODO: S'han d'inicialitzar les variables tenint en compte que el array de jugador ha de començar amb l'index 1 
     public function __construct( Player $jugador1, Player $jugador2){
         $this->board = new Board();
         $this->players = [1=> $jugador1, 2=> $jugador2];
@@ -19,10 +20,20 @@ class Game
         $this->winner = null;
     }
 
-    // getters i setters
+    // TODO: getters i setters
 
-    public function reset(): void //Reinicia el joc
-    public function play($columna)  //Realitza un moviment
+    public function reset(): void{
+        // TODO: Reinicia el joc
+    }
+    public function play($columna){
+        // TODO: Realitza un moviment
+        $this->board->setMovementOnBoard($columna, $this->nextPlayer);
+    }
+
+    /**
+    * Realitza moviment automàtic
+    * @return void
+    */                                          
     public function playAutomatic(){
         $opponent = $this->nextPlayer === 1 ? 2 : 1;
 
@@ -62,7 +73,72 @@ class Game
         $inthemiddle = $possibles[$middle];
         $this->play($inthemiddle);
     }
-    public function save()  //Guarda l'estat del joc a les sessions
-    public static function restore() //Restaura l'estat del joc de les sessions
+    public function save(){
+        // TODO: Guarda l'estat del joc a les sessions
+        $_SESSION['game'] = serialize($this);
+    }
+    public static function restore(){
+        // TODO: Restaura l'estat del joc de les sessions la partida de antes
+        if(isset ($_SESSION['game'])){
+            return unserialize($_SESSION['game'], [Game::class]);
+        }
+    }
 
+    
+
+    /**
+    * @return Board
+    */
+    public function getBoard(): Board {
+    	return $this->board;
+    }
+
+    /**
+    * @param Board $board
+    */
+    public function setBoard(Board $board): void {
+    	$this->board = $board;
+    }
+
+    /**
+    * @return array
+    */
+    public function getPlayers(): array {
+    	return $this->players;
+    }
+
+    /**
+    * @param array $players
+    */
+    public function setPlayers(array $players): void {
+    	$this->players = $players;
+    }
+
+    /**
+    * @return Player
+    */
+    public function getWinner(): ?Player {
+    	return $this->winner;
+    }
+
+    /**
+    * @param Player $winner
+    */
+    public function setWinner(Player $winner): void {
+    	$this->winner = $winner;
+    }
+
+    /**
+    * @return array
+    */
+    public function getScores(): array {
+    	return $this->scores;
+    }
+
+    /**
+    * @param array $scores
+    */
+    public function setScores(array $scores): void {
+    	$this->scores = $scores;
+    }
 }

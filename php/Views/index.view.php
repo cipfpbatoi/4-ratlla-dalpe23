@@ -14,12 +14,12 @@
     </style>
 </head>
 <body>
-<?php include_once $_SERVER['DOCUMENT_ROOT'].'/../Views/partials/error.view.php'  ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'].'/../Views/error.view.php'  ?>
  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-    <?php include_once $_SERVER['DOCUMENT_ROOT'].'/../Views/partials/board.view.php'  ?>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'].'/../Views/board.view.php'  ?>
      <input type="submit" name="reset" value="Reiniciar joc">
      <input type="submit" name="exit" value="Acabar joc">
 </form>
- <?php include_once $_SERVER['DOCUMENT_ROOT'].'/../Views/partials/panel.view.php'  ?>
+ <?php include_once $_SERVER['DOCUMENT_ROOT'].'/../Views/panel.view.php'  ?>
 </body>
 </html>

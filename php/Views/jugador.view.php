@@ -17,10 +17,10 @@
         <label for="color">Selecciona un color:</label>
         <select id="color" name="color" required>
             <option value="">Selecciona un color</option>
-            <option value="rojo">Rojo</option>
-            <option value="azul">Azul</option>
-            <option value="verde">Verde</option>
-            <option value="amarillo">Amarillo</option>
+            <option value="red">Rojo</option>
+            <option value="blue">Azul</option>
+            <option value="green">Verde</option>
+            <option value="yellow">Amarillo</option>
         </select>
         <br><br>
 
