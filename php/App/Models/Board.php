@@ -32,7 +32,7 @@ class Board
     }
         // TODO: Realitza un moviment en la graella
     public function setMovementOnBoard(int $column, int $player): array {
-        for ($fila = count($this->slots); $fila >= 0; $fila--) {
+        for ($fila = count($this->slots); $fila > 0; $fila--) {
             if ($this->slots[$fila][$column] == 0) {
                 $this->slots[$fila][$column] = $player;
                 break;
@@ -41,18 +41,73 @@ class Board
         return $this->slots;
     }
 
-    public function checkWin(array $coord): bool {
-        // TODO: Comprova si hi ha un guanyador
-        return false;
+    public function checkWin(int $jugador): bool {
+        // Horizontal
+        for ($fila = 1; $fila <= self::FILES; $fila++) {
+            for ($columna = 1; $columna <= self::COLUMNS - 3; $columna++) {
+                if ($this->slots[$fila][$columna] == $jugador &&
+                    $this->slots[$fila][$columna + 1] == $jugador &&
+                    $this->slots[$fila][$columna + 2] == $jugador &&
+                    $this->slots[$fila][$columna + 3] == $jugador) {
+                    return true;
+                }
+            }
+        }
+    
+        // Vertical
+        for ($columna = 1; $columna <= self::COLUMNS; $columna++) {
+            for ($fila = 1; $fila <= self::FILES - 3; $fila++) {
+                if ($this->slots[$fila][$columna] == $jugador &&
+                    $this->slots[$fila + 1][$columna] == $jugador &&
+                    $this->slots[$fila + 2][$columna] == $jugador &&
+                    $this->slots[$fila + 3][$columna] == $jugador) {
+                    return true;
+                }
+            }
+        }
+    
+        // Diagonal derecha (abajo-derecha)
+        for ($fila = 1; $fila <= self::FILES - 3; $fila++) {
+            for ($columna = 1; $columna <= self::COLUMNS - 3; $columna++) {
+                if ($this->slots[$fila][$columna] == $jugador &&
+                    $this->slots[$fila + 1][$columna + 1] == $jugador &&
+                    $this->slots[$fila + 2][$columna + 2] == $jugador &&
+                    $this->slots[$fila + 3][$columna + 3] == $jugador) {
+                    return true;
+                }
+            }
+        }
+    
+        // Diagonal izquierda (abajo-izquierda)
+        for ($fila = 4; $fila <= self::FILES; $fila++) {
+            for ($columna = 1; $columna <= self::COLUMNS - 3; $columna++) {
+                if ($this->slots[$fila][$columna] == $jugador &&
+                    $this->slots[$fila - 1][$columna + 1] == $jugador &&
+                    $this->slots[$fila - 2][$columna + 2] == $jugador &&
+                    $this->slots[$fila - 3][$columna + 3] == $jugador) {
+                    return true;
+                }
+            }
+        }
+    
+        return false; 
     }
+    
     public function isValidMove(int $column): bool {
         // TODO: Comprova si el moviment és vàlid
-        return false;
+        return $this->slots[1][$column] === 0;
     }
 
     public function isFull(): bool {
         // TODO: El tauler està ple?
-        return false;
+        foreach ($this->slots as $fila) {
+            foreach ($fila as $celda) {
+                if ($celda == 0) {
+                    return false; 
+                }
+            }
+        }
+        return true; 
     }
 
 

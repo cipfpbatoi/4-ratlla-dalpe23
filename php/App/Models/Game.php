@@ -24,11 +24,34 @@ class Game
 
     public function reset(): void{
         // TODO: Reinicia el joc
+        $this->board = new Board();
+        $this->nextPlayer = 1;
+        $this->winner = null;
     }
     public function play($columna){
         // TODO: Realitza un moviment
-        $this->board->setMovementOnBoard($columna, $this->nextPlayer);
+        $movimientoJugador = $this->board->setMovementOnBoard($columna, $this->nextPlayer);
+
+        if ($this->board->checkWin($this->nextPlayer)){
+            $this->winner = $this->players[$this->nextPlayer];
+            $this->scores[$this->nextPlayer]++;
+        } else {
+             $this->nextPlayer = ($this->nextPlayer == 1) ? 2 : 1;
+        }
+        $this->save();
     }
+
+    public function save(){
+        // TODO: Guarda l'estat del joc a les sessions
+        $_SESSION['game'] = serialize($this);
+    }
+    public static function restore(){
+        // TODO: Restaura l'estat del joc de les sessions la partida de antes
+        if(isset ($_SESSION['game'])){
+            return unserialize($_SESSION['game'], [Game::class]);
+        }
+    }
+
 
     /**
     * Realitza moviment automàtic
@@ -42,7 +65,7 @@ class Game
                 $tempBoard = clone($this->board);
                 $coord = $tempBoard->setMovementOnBoard($col, $this->nextPlayer);
 
-                if ($tempBoard->checkWin($coord)) {
+                if ($tempBoard->checkWin($this->nextPlayer)) {
                     $this->play($col);
                     return;
                 }
@@ -53,7 +76,7 @@ class Game
             if ($this->board->isValidMove($col)) {
                 $tempBoard = clone($this->board);
                 $coord = $tempBoard->setMovementOnBoard($col, $opponent);
-                if ($tempBoard->checkWin($coord )) {
+                if ($tempBoard->checkWin($this->nextPlayer )) {
                     $this->play($col);
                     return;
                 }
@@ -66,22 +89,11 @@ class Game
                 $possibles[] = $col;
             }
         }
-        if (count($possibles)>2) {
-            $random = rand(-1,1);
-        }
+      
+        $random = count($possibles)>1?rand(-1,1):0;
         $middle = (int) (count($possibles) / 2)+$random;
         $inthemiddle = $possibles[$middle];
         $this->play($inthemiddle);
-    }
-    public function save(){
-        // TODO: Guarda l'estat del joc a les sessions
-        $_SESSION['game'] = serialize($this);
-    }
-    public static function restore(){
-        // TODO: Restaura l'estat del joc de les sessions la partida de antes
-        if(isset ($_SESSION['game'])){
-            return unserialize($_SESSION['game'], [Game::class]);
-        }
     }
 
     
@@ -140,5 +152,12 @@ class Game
     */
     public function setScores(array $scores): void {
     	$this->scores = $scores;
+    }
+
+    /**
+    * @return int
+    */
+    public function getNextPlayer(): int {
+    	return $this->nextPlayer;
     }
 }

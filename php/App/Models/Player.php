@@ -18,12 +18,14 @@ class Player {
     public function getName() {
     	return $this->name;
     }
+    
 
     /**
     * @param $name
     */
     public function setName($name) {
     	$this->name = $name;
+        return $this;
     }
 
     public function getColor() {
@@ -35,6 +37,7 @@ class Player {
     */
     public function setColor($color) {
     	$this->color = $color;
+        return $this;
     }
 
     public function getIsAutomatic() {
@@ -46,5 +49,13 @@ class Player {
     */
     public function setIsAutomatic($isAutomatic) {
     	$this->isAutomatic = $isAutomatic;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString() {
+    	return "Name: {$this->name}, Color: {$this->color}, IsAutomatic: {$this->isAutomatic}";
     }
 }
